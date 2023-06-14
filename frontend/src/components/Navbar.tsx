@@ -10,9 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { routes } from "../routes";
+import { routes } from "../routes.ts";
 import { NavLink } from "react-router-dom";
-import { Capitalise } from "../common/textFunctions";
+import { Capitalise } from "../common/textFunctions.ts";
 
 const Navbar: FC = (): ReactElement => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);

@@ -1,6 +1,6 @@
 // pages
-import Home from "./pages/Home";
-import Courses from "./pages/Courses";
+import Home from "./pages/Home.tsx";
+import Courses from "./pages/Courses.tsx";
 
 // other
 import {FC} from "react";

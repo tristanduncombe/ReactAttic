@@ -1,0 +1,65 @@
+version: "3.3"
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: MyDBRoot123
+      MYSQL_DATABASE: attic
+      MYSQL_USER: php
+      MYSQL_PASSWORD: php
+    ports:
+      - "3306:3306"
+    networks:
+      - mynet
+    restart: unless-stopped
+    volumes:
+      - maria-data:/data/db
+
+  phpMyAdmin:
+    image: phpmyadmin:latest
+    container_name: phpMyAdmin
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    environment:
+      PMA_HOST: mariadb
+    ports:
+      - "8082:80"
+    networks:
+      - mynet
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "9000:9000"
+    networks:
+      - mynet
+    restart: unless-stopped
+    depends_on: 
+      - mariadb
+    volumes:
+      - ./backend:/app
+      - /node_modules
+    command: npm start
+
+networks:
+  mynet:
+    driver: bridge
+
+volumes:
+  maria-data:
+    driver: local
