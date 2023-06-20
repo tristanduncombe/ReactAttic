@@ -10,9 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { routes } from "../routes.ts";
+import { routes } from "../../routes.ts";
 import { NavLink } from "react-router-dom";
-import { Capitalise } from "../common/textFunctions.ts";
+import { Capitalise } from "../../common/textFunctions.ts";
 
 const Navbar: FC = (): ReactElement => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -119,7 +119,7 @@ const Navbar: FC = (): ReactElement => {
                   variant="button"
                   sx={{ marginLeft: "2rem", color: "white" }}
                 >
-                  {Capitalise(page.title)}
+                  {Capitalise(page?.title)}
                 </Link>
               ))}
             </Box>

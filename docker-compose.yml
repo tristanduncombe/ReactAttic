@@ -38,6 +38,8 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
+    networks:
+      - mynet
 
   backend:
     build:
@@ -51,15 +53,14 @@ services:
     restart: unless-stopped
     depends_on: 
       - mariadb
+    environment:
+      DB_HOST: mariadb
     volumes:
-      - ./backend:/app
-      - /node_modules
-    command: npm start
-
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
 networks:
   mynet:
     driver: bridge
 
 volumes:
   maria-data:
-    driver: local

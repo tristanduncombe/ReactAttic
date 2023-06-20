@@ -1,14 +1,14 @@
 const express = require('express');
 const mysql = require('mysql');
 const cors = require('cors');
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 9000;
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:3000'
+};
 
-const server = app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.use(cors(corsOptions));
 
 const connection = mysql.createConnection({
   host: 'mariadb',
@@ -24,14 +24,17 @@ connection.connect((err) => {
 
 app.get('/courses', (req, res) => {
   // Query the database for all courses
-  connection.query('SELECT * FROM courses', (err, result) => {
+  connection.query('SELECT * FROM courses', (err, results) => {
     if (err) {
       console.error(err);
       res.status(500).send('Error retrieving courses from database');
     } else {
-      res.json(result);
+      res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+      res.json(results);
     }
   });
 });
 
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
