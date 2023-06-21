@@ -1,5 +1,5 @@
 import React, { ReactElement, FC, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Box, Card, CardHeader, Grid, Paper, TextField, Typography } from "@mui/material";
 import axios from 'axios';
 import Message from "../components/exam/Message"
@@ -11,79 +11,98 @@ interface CourseParams extends Record<string, string> {
 const Courses: FC<any> = (): ReactElement => {
   const { id } = useParams<CourseParams>();
   const [response, setResponse] = useState<any>(null);
+  const [assessmentItem, setAssessmentItems] = useState<any>([]);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const [courseId, setCourseId] = useState<number>(null);
 
   useEffect(() => {
-    axios.get("//localhost:9000/course/" + id)
-      .then((response) => {
-        setResponse(response.data);
-      })
-      .catch((error) => {
+    let isMounted = true;
+    axios.get(`//localhost:9000/course/id/${id}`).then(response => {
+      setCourseId(response.data.course_id);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
+  
+  useEffect(() => {
+    let isMounted = true;
+    if (courseId !== null) {
+      Promise.all([
+        axios.get(`//localhost:9000/course/${courseId}`),
+        axios.get(`//localhost:9000/course/${courseId}/assessments`)
+      ]).then(([courseResponse, assessmentResponse]) => {
+        if (isMounted) {
+          setResponse(courseResponse.data);
+          setAssessmentItems(assessmentResponse.data);
+        }
+      }).catch((error) => {
         setError(error);
       });
-  });
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [courseId]);
+  
+  console.log(assessmentItem, response, (response?.course_id === true), id, courseId)
 
-  const assessmentid = [{ assessmentid: "1", type: "exam", year: 2022, semester: 1 }, { assessmentid: "2", type: "exam", year: 2021, semester: 1 }]
+  function generateAssessmentCards() {
+    if (!assessmentItem) return (<div></div>);
+    return assessmentItem.map((item: { course_id: number, assessment_id: number, assessment_type: number, assessment_title: string, assessment_description: string }) => {
+      return (
+        <Grid item xs={12} key={item.course_id}>
+          <Card
+            elevation={3}
+            sx={{ py: 2, px: 2, cursor: "pointer" }}
+            onClick={() => navigate(`/Courses/${id}/${item.assessment_id}`)}
+            id={`card-${item.assessment_id}`}
+          >
+            <Typography component="div" variant="h5">
+              {item.assessment_title}
+            </Typography>
+            <Typography>
+              {item.assessment_description}
+            </Typography>
 
-
-  function generateCards() {
-
+          </Card>
+        </Grid>
+      )
+    });
   }
 
-  // Use the `id` parameter in your API calls or other logic
+  return (
+    <Box
+      sx={{
+        flexGrow: 1,
+        backgroundColor: "#c2c2c2",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Paper sx={{ minWidth: "60%", px: 3, py: 3 }}>
+        <Typography variant="h4">
+        </Typography>
+        <Typography variant="h6">
+        </Typography>
+        <Grid container spacing={2} sx={{ mt: 3 }}>
+          <Grid item xs={6}>
+            <Typography component="div" variant="h5">
+              {response?.course_name} - {response?.course_title}
+            </Typography>
+            <Typography>
+              {response?.course_description}
+            </Typography>
 
-  if (response?.course_id && response?.course_name && response?.course_title) {
-
-    return (
-      <Box
-        sx={{
-          flexGrow: 1,
-          backgroundColor: "#c2c2c2",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Paper sx={{ minWidth: "60%", px: 3, py: 3 }}>
-          <Typography variant="h4">
-          </Typography>
-          <Typography variant="h6">
-          </Typography>
-          <Grid container spacing={2} sx={{ mt: 3 }}>
-            <Grid item xs={6}>
-                <Typography component="div" variant="h5">
-                  {response.course_name} - {response.course_title}
-                </Typography>
-                <Typography>
-                  {response.course_description}
-                </Typography>
-            </Grid>
+            {generateAssessmentCards()}
           </Grid>
-        </Paper>
-      </Box>
-    );
-  }
-
-  else {
-
-    return (
-      <Box
-        sx={{
-          flexGrow: 1,
-          backgroundColor: "#c2c2c2",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Paper sx={{ minWidth: "60%", px: 3, pb: 3 }}>
-          <Typography variant="h4">
-            something went wrong
-          </Typography>
-        </Paper>
-      </Box>
-    );
-  }
+        </Grid>
+      </Paper>
+    </Box>
+  );
 };
 
 export default Courses;
