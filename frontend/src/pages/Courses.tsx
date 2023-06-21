@@ -48,7 +48,10 @@ const Courses: FC<any> = (): ReactElement => {
             <Typography component="div" variant="h5">
               {course.course_name} - {course.course_title}
             </Typography>
-            {course.course_description}
+            <Typography>
+              {course.course_description}
+            </Typography>
+            
           </Card>
         </Grid>
       )
