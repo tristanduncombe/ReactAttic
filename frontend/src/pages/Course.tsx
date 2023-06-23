@@ -57,7 +57,6 @@ const Courses: FC<any> = (): ReactElement => {
     };
   }, [courseId]);
 
-  console.log(assessmentItem)
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [expandedSemester, setExpandedSemester] = useState<string | null>(null);
 
@@ -97,7 +96,7 @@ const Courses: FC<any> = (): ReactElement => {
                 <Card
                   elevation={hoveredCard === item.assessment_id ? 6 : 3}
                   sx={{ p: 2, m: 2 }}
-                  onClick={() => navigate(`/Courses/${response.course_name}/AssesmentItem/${item.assessment_id}`)}
+                  onClick={() => navigate(`/Courses/${response.course_name}/AssessmentItem/${item.assessment_id}`)}
                   onMouseOver={() => setHoveredCard(item.assessment_id)}
                   onMouseOut={() => setHoveredCard(null)}
                 >
