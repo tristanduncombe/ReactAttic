@@ -93,7 +93,7 @@ ReactAttic was built with the goal to be an upgrade from UQAttic. Its purpose is
 
 ### Built With
 
-* [![React][React.js]][React-url]
+[![React][React.js]][React-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
