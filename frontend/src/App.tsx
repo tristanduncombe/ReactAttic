@@ -2,8 +2,8 @@ import React from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { routes as appRoutes } from "./routes";
-import Layout from "./components/Layout";
+import { routes as appRoutes } from "./routes.ts";
+import Layout from "./components/layout/Layout.tsx";
 
 function App() {
   // define theme

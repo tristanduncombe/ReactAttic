@@ -12,7 +12,7 @@ const Home: FC<any> = (): ReactElement => {
         alignItems: "center",
       }}
     >
-      <Paper elevation={3} sx={{minWidth: "60%", px: 3, py: 3}}>
+      <Paper elevation={3} sx={{maxWidth: "lg", width: "100%", px: 3, py: 3}}>
         <Typography variant="h2">
           ReactAttic
         </Typography>

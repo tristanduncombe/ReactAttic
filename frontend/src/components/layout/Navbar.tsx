@@ -10,9 +10,10 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { routes } from "../routes";
+import { routes } from "../../routes.ts";
 import { NavLink } from "react-router-dom";
-import { Capitalise } from "../common/textFunctions";
+import { Capitalise } from "../../common/textFunctions.ts";
+import AccountMenu from "./AccountMenu.tsx"
 
 const Navbar: FC = (): ReactElement => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -28,12 +29,11 @@ const Navbar: FC = (): ReactElement => {
   return (
     <Box
       sx={{
-        width: "100%",
         height: "auto",
         backgroundColor: "secondary.main",
       }}
     >
-      <Container maxWidth="xl">
+      <Container>
         <Toolbar disableGutters>
           <Typography
             variant="h6"
@@ -41,7 +41,8 @@ const Navbar: FC = (): ReactElement => {
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
-              color: "white"
+              color: "white",
+              maxWidth: "lg"
             }}
           >
             ReactAttic
@@ -119,10 +120,13 @@ const Navbar: FC = (): ReactElement => {
                   variant="button"
                   sx={{ marginLeft: "2rem", color: "white" }}
                 >
-                  {Capitalise(page.title)}
+                  {Capitalise(page?.title)}
                 </Link>
               ))}
             </Box>
+          </Box>
+          <Box sx={{alignItems: 'right'}}>
+            <AccountMenu />
           </Box>
         </Toolbar>
       </Container>
