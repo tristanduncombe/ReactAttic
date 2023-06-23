@@ -214,7 +214,7 @@ Project Link: [https://github.com/tristanduncombe/ReactAttic](https://github.com
 [issues-shield]: https://img.shields.io/github/issues/tristanduncombe/ReactAttic.svg?style=for-the-badge
 [issues-url]: https://github.com/tristanduncombe/ReactAttic/issues
 [license-shield]: https://img.shields.io/github/license/tristanduncombe/ReactAttic.svg?style=for-the-badge
-[license-url]: https://github.com/tristanduncombe/ReactAttic/blob/master/LICENSE.md
+[license-url]: https://github.com/tristanduncombe/ReactAttic/blob/main/README.md
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/tristan-duncombe
 [product-screenshot]: images/screenshot.png
