@@ -62,7 +62,7 @@ app.get('/course/:id', (req, res) => {
       res.status(404).send(`Course with ID ${courseId} not found`);
     } else {
       res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-      res.json(results);
+      res.json(results[0]);
     }
   });
 });

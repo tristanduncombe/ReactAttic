@@ -68,7 +68,7 @@ const Courses: FC<any> = (): ReactElement => {
         alignItems: "center",
       }}
     >
-      <Paper sx={{ minWidth: "60%", px: 3, py: 3 }}>
+      <Paper sx={{maxWidth: "lg", width: "100%", px: 3, py: 3}}>
         <Typography variant="h4">
           Course Lookup
         </Typography>

@@ -41,7 +41,7 @@ export const routes: Array<Route> = [
   {
     key: "course-assessmentitem-route",
     title: "",
-    path: "/Courses/:id/:assessmentItemId",
+    path: "/Courses/:id/AssessmentItem/:assessmentItemId",
     enabled: true,
     component: Exam,
     hideFromHeader: true,

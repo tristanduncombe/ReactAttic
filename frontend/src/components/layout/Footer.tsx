@@ -1,5 +1,5 @@
 import React, { FC, ReactElement } from "react";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Link, Typography } from "@mui/material";
 
 export const Footer: FC = (): ReactElement => {
   return (
@@ -8,20 +8,24 @@ export const Footer: FC = (): ReactElement => {
         width: "100%",
         height: "auto",
         backgroundColor: "secondary.main",
-        pt: "1",
-        pb: "1",
+        color: "white",
+        p: 2,
       }}
     >
-      <Container maxWidth="lg">
-        <Grid container direction="column" alignItems="center">
-          <Grid item xs={12}>
-            <Typography color="white" variant="h5">
-              ReactAttic
+      <Container maxWidth="md" sx={{p:2}}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} sm={6}>
+            <Typography variant="h5">ReactAttic</Typography>
+            <Typography variant="body1">
+              Improving "the UQ Experience"
             </Typography>
           </Grid>
-          <Grid item xs={12}>
-            <Typography color="white" variant="subtitle1">
-              {`${new Date().getFullYear()}`}
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1">
+              &copy; {new Date().getFullYear()} ReactAttic. All rights reserved.
+            </Typography>
+            <Typography variant="body1">
+              <Link href="https://github.com/tristanduncombe/ReactAttic" sx={{color: "white"}}>Please Consider Contributing</Link>
             </Typography>
           </Grid>
         </Grid>
