@@ -85,7 +85,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+ReactAttic was built with the goal to be an upgrade from UQAttic. Its purpose is to develop an open source solution to allow university students to share answers to past tests, assignments, or share cheat sheets. It is built on React and MUI, and is designed to be reactive and helpful.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -93,14 +93,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
 * [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -122,19 +115,15 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/tristanduncombe/ReactAttic.git
    ```
-3. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-4. Run Applicaton
+2. Run Applicaton
    ```sh
    docker-compose up -d --build
    ```
+3. Open PHP My admin at ```https:localhost:8082``` and import attic.db
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -145,7 +134,7 @@ This is an example of how to list things you need to use the software and how to
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+_For more examples, please refer to the [Documentation](https://github.com/tristanduncombe/ReactAttic/wiki)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -159,7 +148,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Feature 3
     - [ ] Nested Feature
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/tristanduncombe/ReactAttic/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -195,9 +184,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Tristan Duncombe - tduncombe747@gmail.com
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/tristanduncombe/ReactAttic](https://github.com/tristanduncombe/ReactAttic)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
