@@ -1,9 +1,14 @@
 import React, { ReactElement, FC, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Box, Card, CardHeader, Grid, IconButton, Paper, TextField, Typography } from "@mui/material";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Avatar, Box, Card, CardContent, CardHeader, Grid, IconButton, Paper, TextField, Tooltip, Typography } from "@mui/material";
 import axios from 'axios';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
+import ReportIcon from "@mui/icons-material/Report";
+
+
 
 interface AssessmentParams extends Record<string, string> {
   id: string;
@@ -17,17 +22,31 @@ const Courses: FC<any> = (): ReactElement => {
   const [response, setResponse] = useState<any>(null);
   const [questions, setQuestions] = useState<any[]>([]);
   const [error, setError] = useState(null);
+  const [value, setValue] = useState(0);
+  const [like, setLike] = useState(false);
+  const [dislike, setDislike] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
     axios.get(`//localhost:9000/exam/${assessmentId}`).then(response => {
-      setQuestions(response.data);
+      setResponse(response.data);
     });
     return () => {
       isMounted = false;
     };
   }, [id]);
 
+  console.log(response?.questions.sort((a: any, b: any) => a.questionNumber - b.questionNumber))
+
+  const handleLike = () => {
+    setLike(!like);
+    setDislike(false);
+  };
+
+  const handleDislike = () => {
+    setDislike(!dislike);
+    setLike(false);
+  };
 
   return (
     <Box
@@ -37,24 +56,72 @@ const Courses: FC<any> = (): ReactElement => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        flexDirection: "column"
       }}
     >
-      <Grid>
-        <Grid item xs={12}>
-          <Paper sx={{ maxWidth: "lg", width: "100%", px: 3, py: 3 }}>
-            <Typography component="div" variant="h5">
-              {response?.assessmentItem?.assessment_title || "Assessment Title"} - {response?.assessmentItem?.assessment_semester || "Assessment Semester"}, {response?.assessmentItem?.assessment_year || "Assessment Year"}
-            </Typography>
-            <Typography>
-            {response?.assessmentItem?.assessment_description || "Assessment Materials"}
-            </Typography>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+      <Paper sx={{ maxWidth: "lg", width: "100%", px: 3, py: 3 }}>
+        <Typography component="div" variant="h5">
+          {response?.assessmentItem?.assessment_title || "Assessment Title"} - {response?.assessmentItem?.assessment_semester || "Assessment Semester"}, {response?.assessmentItem?.assessment_year || "Assessment Year"}
+        </Typography>
+        <Typography>
+          {response?.assessmentItem?.assessment_description || "Assessment Materials"}
+        </Typography>
+      </Paper>
+      <Box sx={{ my: 1, maxWidth: "lg", width: "100%" }}>
+        {response?.questions?.map((question: any, index: number) => {
+          const answer = response?.answers?.find((a: any) => a.assessmentQuestion === question.questionIdentifier);
+          console.log(response.user.find((user: any) => user.id === question.user)?.image)
+          return (
+            <Paper key={question.questionIdentifier} sx={{ mt: 1, maxWidth: "lg", width: "100%", px: 3, py: 3 }}>
+              <Typography variant="h6" component="h2">
+                {question.questionNumber})
+              </Typography>
+              <Typography>
+                {question.question}
+              </Typography>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end", mt: 1 }}>
+                <Tooltip title={response.user.find((user: any) => user.user === question.user)?.nickname}>
+                  <Link to={`/user/${response.user.find((user: any) => user.user === question.user)?.name}`}>
+                    <Avatar sx={{ width: 32, height: 32, mr: 1 }} src={response.user.find((user: any) => user.user === question.user)?.image} />
+                  </Link>
+                </Tooltip>
+                <Typography variant="body2">{response.user.find((user: any) => user.user === question.user)?.nickname}</Typography>
+              </Box>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end", mt: 1 }}>
+                <Tooltip title="Like">
+                  {like ? (
+                    <ThumbUpIcon sx={{ mr: 1, fontSize: "medium", color: "primary.main" }} onClick={handleLike} />
+                  ) : (
+                    <ThumbUpOutlinedIcon sx={{ mr: 1, fontSize: "medium" }} onClick={handleLike} />
+                  )}
+                </Tooltip>
+                <Tooltip title="Dislike">
+                  {dislike ? (
+                    <ThumbDownIcon sx={{ mr: 1, fontSize: "medium", color: "error.main" }} onClick={handleDislike} />
+                  ) : (
+                    <ThumbDownOutlinedIcon sx={{ mr: 1, fontSize: "medium" }} onClick={handleDislike} />
+                  )}
+                </Tooltip>
+                <Tooltip title="Report">
+                  <ReportIcon sx={{ fontSize: "medium" }} />
+                </Tooltip>
+              </Box>
+              {answer && (
+                <Card sx={{ mt: 1, maxWidth: "lg", width: "100%" }}>
+                  <CardContent>
+                    <Typography variant="h6" component="h2">
+                      Solutions
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                      {answer.answer}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              )}
+            </Paper>
+          );
+        })}
+      </Box>
     </Box>
   );
 };

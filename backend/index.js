@@ -85,7 +85,7 @@ app.get('/exam/:id', (req, res) => {
   const assessmentId = req.params.id;
   // Query the database for the course with the specified ID
 
-  let response = {questions: [], answers: [], assessmentItem: null};
+  let response = {questions: [], answers: [], assessmentItem: null, user: null};
   connection.query('SELECT * FROM assessmentQuestion WHERE assessment = ?', [assessmentId], (err, results) => {
     if (err) {
       console.error(err);
@@ -100,16 +100,26 @@ app.get('/exam/:id', (req, res) => {
         } else {
           response.answers = results;
 
-          connection.query('SELECT * FROM assessmentItem WHERE assessment_id = ?', [assessmentId], (err, results) => {
+          // Get all unique user IDs from questions and answers
+          const userIds = [...new Set([...response.questions.map((q) => q.user), ...response.answers.map((a) => a.user)])];
+
+          // Fetch user information for each user ID
+          connection.query('SELECT * FROM user WHERE user IN (?)', [userIds], (err, results) => {
             if (err) {
               console.error(err);
               res.status(500).send('Error exam data from database');
             } else {
-              response.assessmentItem = results[0];
-
-              console.log(response)
-              res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-              res.json(response);
+              response.user = results;
+              connection.query('SELECT * FROM assessmentItem WHERE assessment_id = ?', [assessmentId], (err, results) => {
+                if (err) {
+                  console.error(err);
+                  res.status(500).send('Error exam data from database');
+                } else {
+                  response.assessmentItem = results[0];
+                  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+                  res.json(response);
+                }
+              });
             }
           });
         }
