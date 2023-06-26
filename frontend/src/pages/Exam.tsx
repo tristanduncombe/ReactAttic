@@ -36,7 +36,7 @@ const Courses: FC<any> = (): ReactElement => {
     };
   }, [id]);
 
-  console.log(response?.questions.sort((a: any, b: any) => a.questionNumber - b.questionNumber))
+  console.log(response)
 
   const handleLike = () => {
     setLike(!like);
@@ -59,7 +59,7 @@ const Courses: FC<any> = (): ReactElement => {
         flexDirection: "column"
       }}
     >
-      <Paper sx={{ maxWidth: "lg", width: "100%", px: 3, py: 3 }}>
+      <Paper sx={{ maxWidth: "lg", width: "100%", p: 3 }}>
         <Typography component="div" variant="h5">
           {response?.assessmentItem?.assessment_title || "Assessment Title"} - {response?.assessmentItem?.assessment_semester || "Assessment Semester"}, {response?.assessmentItem?.assessment_year || "Assessment Year"}
         </Typography>
@@ -107,18 +107,46 @@ const Courses: FC<any> = (): ReactElement => {
                 </Tooltip>
               </Box>
               {answer && (
-                <Card sx={{ mt: 1, maxWidth: "lg", width: "100%" }}>
-                  <CardContent>
-                    <Typography variant="h6" component="h2">
-                      Solutions
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                      {answer.answer}
-                    </Typography>
-                  </CardContent>
-                </Card>
+                <Paper>
+                  <Card sx={{ width: "100%", mt: 1 }}>
+                    <CardContent>
+                      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-start", mt: 1 }}>
+                        <Tooltip title={response.user.find((user: any) => user.user === answer.user)?.nickname}>
+                          <Link to={`/user/${response.user.find((user: any) => user.user === question.user)?.name}`}>
+                            <Avatar sx={{ width: 32, height: 32, mr: 1 }} src={response.user.find((user: any) => user.user === question.user)?.image} />
+                          </Link>
+                        </Tooltip>
+                        <Typography variant="body2">{response.user.find((user: any) => user.user === question.user)?.nickname}</Typography>
+                      </Box>
+                      <Typography sx={{ pt: 2 }}>
+                        {answer.response}
+                      </Typography>
+                      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-start", mt: 1 }}>
+                        <Tooltip title="Like">
+                          {like ? (
+                            <ThumbUpIcon sx={{ mr: 1, fontSize: "medium", color: "primary.main" }} onClick={handleLike} />
+                          ) : (
+                            <ThumbUpOutlinedIcon sx={{ mr: 1, fontSize: "medium" }} onClick={handleLike} />
+                          )}
+                        </Tooltip>
+                        <Tooltip title="Dislike">
+                          {dislike ? (
+                            <ThumbDownIcon sx={{ mr: 1, fontSize: "medium", color: "error.main" }} onClick={handleDislike} />
+                          ) : (
+                            <ThumbDownOutlinedIcon sx={{ mr: 1, fontSize: "medium" }} onClick={handleDislike} />
+                          )}
+                        </Tooltip>
+                        <Tooltip title="Report">
+                          <ReportIcon sx={{ fontSize: "medium" }} />
+                        </Tooltip>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Paper>
+
               )}
             </Paper>
+
           );
         })}
       </Box>

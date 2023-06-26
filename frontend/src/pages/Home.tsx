@@ -1,5 +1,6 @@
 import React, { ReactElement, FC } from "react";
 import { Box, Paper, Typography } from "@mui/material";
+import HideCard from "../components/generic/HideCard"
 
 const Home: FC<any> = (): ReactElement => {
   return (
@@ -23,7 +24,6 @@ const Home: FC<any> = (): ReactElement => {
           Our goal is provide answers to tests from the University of Queensland.
         </Typography>
       </Paper>
-
     </Box>
   );
 };

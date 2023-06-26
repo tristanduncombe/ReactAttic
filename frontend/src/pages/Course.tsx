@@ -4,6 +4,7 @@ import { Box, Card, CardHeader, Grid, IconButton, Paper, TextField, Typography }
 import axios from 'axios';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import HideCard from "../components/generic/HideCard";
 
 interface CourseParams extends Record<string, string> {
   id: string;
@@ -76,43 +77,29 @@ const Courses: FC<any> = (): ReactElement => {
 
     // Map over semesters and render a Paper for each semester
   return Object.entries(semesters).map(([semester, items]) => (
-    <Grid item xs={12} key={semester} sx={{ mt: 2 }}>
-      <Paper elevation={3} sx={{ py: 2, px: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Typography component="div" variant="h5">
-            Semester {semester}
-          </Typography>
-          <IconButton
-            onClick={() => setExpandedSemester(expandedSemester === semester ? null : semester)}
-            sx={{ p: 1 }}
+    <HideCard title={"Semester " + semester} key={semester}  content={
+      items.map((item: any) => (
+        <Grid item xs={6} key={item.assessment_id} sx={{width: "100%"}}>
+          <Card
+            elevation={hoveredCard === item.assessment_id ? 6 : 3}
+            sx={{ p: 2, m: 2 }}
+            onClick={() => navigate(`/Courses/${response.course_name}/AssessmentItem/${item.assessment_id}`)}
+            onMouseOver={() => setHoveredCard(item.assessment_id)}
+            onMouseOut={() => setHoveredCard(null)}
           >
-            {expandedSemester === semester ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </IconButton>
-        </Box>
-        {expandedSemester === semester && (
-          <Box sx={{ mt: 2 }}>
-            {items.map((item: any) => (
-              <Grid item xs={6} key={item.assessment_id}>
-                <Card
-                  elevation={hoveredCard === item.assessment_id ? 6 : 3}
-                  sx={{ p: 2, m: 2 }}
-                  onClick={() => navigate(`/Courses/${response.course_name}/AssessmentItem/${item.assessment_id}`)}
-                  onMouseOver={() => setHoveredCard(item.assessment_id)}
-                  onMouseOut={() => setHoveredCard(null)}
-                >
-                  <Typography component="div" variant="h6">
-                    {item.assessment_title}
-                  </Typography>
-                  <Typography>
-                    {item.assessment_description}
-                  </Typography>
-                </Card>
-              </Grid>
-            ))}
-          </Box>
-        )}
-      </Paper>
-    </Grid>
+            <Typography component="div" variant="h6">
+              {item.assessment_title}
+            </Typography>
+            <Typography>
+              {item.assessment_description}
+            </Typography>
+          </Card>
+        </Grid>
+      ))
+
+
+
+    } defaultState={true} />
   ));
 }
 
