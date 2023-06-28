@@ -85,7 +85,7 @@ app.get('/exam/:id', (req, res) => {
   const assessmentId = req.params.id;
   // Query the database for the course with the specified ID
 
-  let response = {questions: [], answers: [], assessmentItem: null, user: null};
+  let response = { questions: [], answers: [], assessmentItem: null, user: null };
   connection.query('SELECT * FROM assessmentQuestion WHERE assessment = ?', [assessmentId], (err, results) => {
     if (err) {
       console.error(err);
@@ -124,6 +124,37 @@ app.get('/exam/:id', (req, res) => {
           });
         }
       });
+    }
+  });
+});
+
+app.get('/like/:response', (req, res) => {
+  const response = req.params.response;
+  // Query the database for the sum of opinions for the specified response
+  connection.query('SELECT SUM(opinion) AS sum FROM assessmentResponseLike WHERE response = ?', [response], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error retrieving likes from database');
+    } else {
+      res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+      res.json(results[0].sum);
+    }
+  });
+});
+
+app.get('/like/:response/:user/:opinion', (req, res) => {
+  const response = req.params.response;
+  const user = req.params.user;
+  const opinion = req.params.opinion;
+  // Insert a new row into the assessmentResponseLike table with the specified user, response, and opinion
+  // If a duplicate user and response combination is found, update the existing row with the new opinion value
+  connection.query('INSERT INTO assessmentResponseLike (user, response, opinion) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE opinion = ?', [user, response, opinion, opinion], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error inserting like into database');
+    } else {
+      res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+      res.send('Like inserted successfully');
     }
   });
 });

@@ -8,13 +8,14 @@ interface Props {
     title: string;
     content: JSX.Element[];
     defaultState: boolean;
+    elevation?: number;
 }
 
-const HideCard = ({ title, content, defaultState }: Props) => {
+const CollapsableCard = ({ title, content, defaultState, elevation = 3 }: Props) => {
     const [expanded, setExpanded] = useState<boolean>(defaultState);
 
     return (
-        <Paper elevation={3} sx={{ p: 2, width: "100%", mt: 1 }}>
+        <Paper elevation={elevation} sx={{ p: 2, width: "100%", mt: 1 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography component="div" variant="h5">
                     { title }
@@ -35,4 +36,4 @@ const HideCard = ({ title, content, defaultState }: Props) => {
     );
 };
 
-export default HideCard;
+export default CollapsableCard;

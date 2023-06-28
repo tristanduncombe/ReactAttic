@@ -4,7 +4,7 @@ import { Box, Card, CardHeader, Grid, IconButton, Paper, TextField, Typography }
 import axios from 'axios';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import HideCard from "../components/generic/HideCard";
+import CollapsableCard from "../components/generic/CollapsableCard";
 
 interface CourseParams extends Record<string, string> {
   id: string;
@@ -77,7 +77,7 @@ const Courses: FC<any> = (): ReactElement => {
 
     // Map over semesters and render a Paper for each semester
   return Object.entries(semesters).map(([semester, items]) => (
-    <HideCard title={"Semester " + semester} key={semester}  content={
+    <CollapsableCard title={"Semester " + semester} key={semester}  content={
       items.map((item: any) => (
         <Grid item xs={6} key={item.assessment_id} sx={{width: "100%"}}>
           <Card

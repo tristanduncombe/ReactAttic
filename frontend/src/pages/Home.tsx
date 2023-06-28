@@ -1,6 +1,6 @@
 import React, { ReactElement, FC } from "react";
 import { Box, Paper, Typography } from "@mui/material";
-import HideCard from "../components/generic/HideCard"
+import HideCard from "../components/generic/CollapsableCard"
 
 const Home: FC<any> = (): ReactElement => {
   return (

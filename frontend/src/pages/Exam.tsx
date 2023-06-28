@@ -7,6 +7,8 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ReportIcon from "@mui/icons-material/Report";
+import ActionButtons from "../components/exam/ActionButtons";
+import CollapsableCard from "../components/generic/CollapsableCard";
 
 
 
@@ -80,39 +82,25 @@ const Courses: FC<any> = (): ReactElement => {
                 {question.question}
               </Typography>
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end", mt: 1 }}>
+                <Typography variant="caption">Posted by: </Typography>
                 <Tooltip title={response.user.find((user: any) => user.user === question.user)?.nickname}>
                   <Link to={`/user/${response.user.find((user: any) => user.user === question.user)?.name}`}>
                     <Avatar sx={{ width: 32, height: 32, mr: 1 }} src={response.user.find((user: any) => user.user === question.user)?.image} />
                   </Link>
                 </Tooltip>
                 <Typography variant="body2">{response.user.find((user: any) => user.user === question.user)?.nickname}</Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end", mt: 1 }}>
-                <Tooltip title="Like">
-                  {like ? (
-                    <ThumbUpIcon sx={{ mr: 1, fontSize: "medium", color: "primary.main" }} onClick={handleLike} />
-                  ) : (
-                    <ThumbUpOutlinedIcon sx={{ mr: 1, fontSize: "medium" }} onClick={handleLike} />
-                  )}
-                </Tooltip>
-                <Tooltip title="Dislike">
-                  {dislike ? (
-                    <ThumbDownIcon sx={{ mr: 1, fontSize: "medium", color: "error.main" }} onClick={handleDislike} />
-                  ) : (
-                    <ThumbDownOutlinedIcon sx={{ mr: 1, fontSize: "medium" }} onClick={handleDislike} />
-                  )}
-                </Tooltip>
                 <Tooltip title="Report">
                   <ReportIcon sx={{ fontSize: "medium" }} />
                 </Tooltip>
               </Box>
+
               {answer && (
-                <Paper>
-                  <Card sx={{ width: "100%", mt: 1 }}>
+                <CollapsableCard title="Discussion (2)" content={[
+                  <Card sx={{ width: "100%", mt: 1 }} elevation={0}>
                     <CardContent>
                       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-start", mt: 1 }}>
                         <Tooltip title={response.user.find((user: any) => user.user === answer.user)?.nickname}>
-                          <Link to={`/user/${response.user.find((user: any) => user.user === question.user)?.name}`}>
+                          <Link to={`/user/${response.user.find((user: any) => user.user === answer.user)?.name}`}>
                             <Avatar sx={{ width: 32, height: 32, mr: 1 }} src={response.user.find((user: any) => user.user === question.user)?.image} />
                           </Link>
                         </Tooltip>
@@ -122,28 +110,11 @@ const Courses: FC<any> = (): ReactElement => {
                         {answer.response}
                       </Typography>
                       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-start", mt: 1 }}>
-                        <Tooltip title="Like">
-                          {like ? (
-                            <ThumbUpIcon sx={{ mr: 1, fontSize: "medium", color: "primary.main" }} onClick={handleLike} />
-                          ) : (
-                            <ThumbUpOutlinedIcon sx={{ mr: 1, fontSize: "medium" }} onClick={handleLike} />
-                          )}
-                        </Tooltip>
-                        <Tooltip title="Dislike">
-                          {dislike ? (
-                            <ThumbDownIcon sx={{ mr: 1, fontSize: "medium", color: "error.main" }} onClick={handleDislike} />
-                          ) : (
-                            <ThumbDownOutlinedIcon sx={{ mr: 1, fontSize: "medium" }} onClick={handleDislike} />
-                          )}
-                        </Tooltip>
-                        <Tooltip title="Report">
-                          <ReportIcon sx={{ fontSize: "medium" }} />
-                        </Tooltip>
+                        <ActionButtons user={response.user.find((user: any) => user.user === answer.user)} id={answer.assessmentResponse} />
                       </Box>
-                    </CardContent>
-                  </Card>
-                </Paper>
 
+                    </CardContent>
+                  </Card>]} defaultState={true} />
               )}
             </Paper>
 
