@@ -2,12 +2,9 @@ import React, { ReactElement, FC, useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Avatar, Box, Card, CardContent, CardHeader, Grid, IconButton, Paper, TextField, Tooltip, Typography } from "@mui/material";
 import axios from 'axios';
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
+import Message from "../components/exam/Message";
 import ReportIcon from "@mui/icons-material/Report";
-import ActionButtons from "../components/exam/ActionButtons";
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import CollapsableCard from "../components/generic/CollapsableCard";
 
 
@@ -72,7 +69,7 @@ const Courses: FC<any> = (): ReactElement => {
       <Box sx={{ my: 1, maxWidth: "lg", width: "100%" }}>
         {response?.questions?.map((question: any, index: number) => {
           const answer = response?.answers?.find((a: any) => a.assessmentQuestion === question.questionIdentifier);
-          console.log(response.user.find((user: any) => user.id === question.user)?.image)
+          console.log(answer, response)
           return (
             <Paper key={question.questionIdentifier} sx={{ mt: 1, maxWidth: "lg", width: "100%", px: 3, py: 3 }}>
               <Typography variant="h6" component="h2">
@@ -93,28 +90,24 @@ const Courses: FC<any> = (): ReactElement => {
                   <ReportIcon sx={{ fontSize: "medium" }} />
                 </Tooltip>
               </Box>
-
               {answer && (
-                <CollapsableCard title="Discussion (2)" content={[
-                  <Card sx={{ width: "100%", mt: 1 }} elevation={0}>
-                    <CardContent>
-                      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-start", mt: 1 }}>
-                        <Tooltip title={response.user.find((user: any) => user.user === answer.user)?.nickname}>
-                          <Link to={`/user/${response.user.find((user: any) => user.user === answer.user)?.name}`}>
-                            <Avatar sx={{ width: 32, height: 32, mr: 1 }} src={response.user.find((user: any) => user.user === question.user)?.image} />
-                          </Link>
-                        </Tooltip>
-                        <Typography variant="body2">{response.user.find((user: any) => user.user === question.user)?.nickname}</Typography>
-                      </Box>
-                      <Typography sx={{ pt: 2 }}>
-                        {answer.response}
-                      </Typography>
-                      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-start", mt: 1 }}>
-                        <ActionButtons user={response.user.find((user: any) => user.user === answer.user)} id={answer.assessmentResponse} />
-                      </Box>
-
-                    </CardContent>
-                  </Card>]} defaultState={true} />
+                <CollapsableCard title={<React.Fragment>
+                  <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}><Typography variant="h6"><QuestionAnswerIcon sx={{mr: 1}}/> Discussion ({response.answers.filter((a: any) => a.assessmentResponse === answer.assessmentResponse).length})</Typography></Box></React.Fragment>} content={[
+                    ...response.answers.filter((a: any) => a.assessmentResponse === answer.assessmentResponse).map((answer: any) => {
+                      const user = response.user.find((u: any) => u.user === answer.user);
+                      return (
+                        <Message
+                          key={answer.id}
+                          content={answer.response}
+                          nickname={user?.nickname}
+                          username={user?.name}
+                          id={answer.id}
+                          user={user}
+                          imageUrl={user?.image}
+                        />
+                      );
+                    })
+                  ]} defaultState={true} />
               )}
             </Paper>
 

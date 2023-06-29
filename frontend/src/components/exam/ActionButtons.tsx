@@ -11,10 +11,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     id: number;
-    user: number;
+    user: {user: number};
 }
 
-const ActionButtons = ({id, user }: Props) => {
+const ActionButtons = ({ id, user }: Props) => {
     const [like, setLike] = useState(false);
     const [dislike, setDislike] = useState(false);
     const [likeCount, setLikeCount] = useState(0);
@@ -29,6 +29,25 @@ const ActionButtons = ({id, user }: Props) => {
                 console.error(error);
             });
 
+        // Fetch the user's opinion for the response
+        axios.get(`http://localhost:9000/like/${id}/${user.user}`)
+            .then(response => {
+                const opinion = response.data;
+                if (opinion === 1) {
+                    setLike(true);
+                    setDislike(false);
+                } else if (opinion === -1) {
+                    setLike(false);
+                    setDislike(true);
+                } else {
+                    setLike(false);
+                    setDislike(false);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
         // Refresh the number of likes every 10 seconds
         const intervalId = setInterval(() => {
             axios.get(`http://localhost:9000/like/${id}`)
@@ -38,11 +57,11 @@ const ActionButtons = ({id, user }: Props) => {
                 .catch(error => {
                     console.error(error);
                 });
-        }, 100);
+        }, 10000);
 
         // Clean up the interval when the component unmounts
         return () => clearInterval(intervalId);
-    }, [id]);
+    }, [id, user.user]);
 
     const handleLike = () => {
         const newLike = !like;
@@ -51,28 +70,28 @@ const ActionButtons = ({id, user }: Props) => {
         const newOpinion = newLike ? 1 : 0;
         // Send a request to update the opinion
         axios.get(`http://localhost:9000/like/${id}/${user.user}/${newOpinion}`)
-          .then(response => {
-            console.log(response.data);
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }
-      
-      const handleDislike = () => {
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    const handleDislike = () => {
         const newDislike = !dislike;
         setDislike(newDislike);
         setLike(false);
         const newOpinion = newDislike ? -1 : 0;
         // Send a request to update the opinion
         axios.get(`http://localhost:9000/like/${id}/${user.user}/${newOpinion}`)
-          .then(response => {
-            console.log(response.data);
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
     return (
         <React.Fragment>
@@ -83,7 +102,7 @@ const ActionButtons = ({id, user }: Props) => {
                     <ThumbUpOutlinedIcon sx={{ mr: 1, fontSize: "medium" }} onClick={handleLike} />
                 )}
             </Tooltip>
-            <Typography variant="caption" sx={{mr: 1}}>
+            <Typography variant="caption" sx={{ mr: 1 }}>
                 {likeCount}
             </Typography>
             <Tooltip title="Dislike">

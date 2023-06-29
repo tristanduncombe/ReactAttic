@@ -5,7 +5,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface Props {
-    title: string;
+    title: JSX.Element[];
     content: JSX.Element[];
     defaultState: boolean;
     elevation?: number;
@@ -17,9 +17,7 @@ const CollapsableCard = ({ title, content, defaultState, elevation = 3 }: Props)
     return (
         <Paper elevation={elevation} sx={{ p: 2, width: "100%", mt: 1 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography component="div" variant="h5">
-                    { title }
-                </Typography>
+                { title }
                 <IconButton
                     onClick={() => setExpanded(expanded ? false : true)}
                     sx={{ p: 1 }}

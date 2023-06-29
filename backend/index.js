@@ -142,6 +142,25 @@ app.get('/like/:response', (req, res) => {
   });
 });
 
+app.get('/like/:response/:user', (req, res) => {
+  const response = req.params.response;
+  const user = req.params.user;
+  // Query the database for the user's opinion for the specified response
+  connection.query('SELECT opinion FROM assessmentResponseLike WHERE response = ? AND user = ?', [response, user], (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error retrieving like from database');
+    } else {
+      res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+      if (results.length > 0) {
+        res.json(results[0].opinion);
+      } else {
+        res.json(0);
+      }
+    }
+  });
+});
+
 app.get('/like/:response/:user/:opinion', (req, res) => {
   const response = req.params.response;
   const user = req.params.user;

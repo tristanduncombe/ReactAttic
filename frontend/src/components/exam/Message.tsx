@@ -1,17 +1,19 @@
 import React, { FC, ReactElement } from "react";
-import { Box, Card, Item, Typography } from "@mui/material";
+import { Avatar, Box, Card, CardContent, Link, Tooltip, Typography } from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
+import ActionButtons from "./ActionButtons";
 
 interface MessageProps {
-    title: string;
-    type: number;
+    id: number;
     content: string;
-    author: string;
+    nickname: string;
+    username: string;
     imageUrl: string;
+    user: any;
 }
 
-export const Message: FC<MessageProps> = ({ title, type, content, author, imageUrl }): ReactElement => {
-    
+export const Message: FC<MessageProps> = ({ id, content, nickname, username, user, imageUrl }): ReactElement => {
+
     return (
         <Box
             sx={{
@@ -22,23 +24,24 @@ export const Message: FC<MessageProps> = ({ title, type, content, author, imageU
                 pb: "1",
             }}
         >
-            <Card elevation={3} sx={{ py: 2, px: 2, width: '100%' }}>
-            <Grid container spacing={2}>
-                <Grid>
-                    <img src={imageUrl} alt={author + " profile image"} width="25px" />
-                </Grid>
-                <Grid xs={10}>
-                    <Typography component="div" variant="caption">
-                        {author}
+            <Card sx={{ py: 2, px: 2, width: '100%' }}>
+                <CardContent>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-start", mt: 1 }}>
+                        <Tooltip title={nickname}>
+                            <Link component="a" to={`/user/${username}`}>
+                                <Avatar sx={{ width: 32, height: 32, mr: 1 }} src={imageUrl} />
+                            </Link>
+                        </Tooltip>
+                        <Typography variant="body2">{nickname}</Typography>
+                    </Box>
+                    <Typography sx={{ pt: 2 }}>
+                        {content}
                     </Typography>
-                </Grid>
-            </Grid>
-                <Typography component="div" variant="h5">
-                    {title}
-                </Typography>
-                <Typography component="div" variant="body1">
-                    {content}
-                </Typography>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-start", mt: 1 }}>
+                        <ActionButtons user={user} id={id} />
+                    </Box>
+
+                </CardContent>
 
             </Card>
         </Box>
