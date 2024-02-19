@@ -24,7 +24,7 @@ export const Message: FC<MessageProps> = ({ id, content, nickname, username, use
                 pb: "1",
             }}
         >
-            <Card sx={{ py: 2, px: 2, width: '100%' }}>
+            <Card sx={{ py: 2, px: 2, width: '100%' }} elevation={0}>
                 <CardContent>
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-start", mt: 1 }}>
                         <Tooltip title={nickname}>

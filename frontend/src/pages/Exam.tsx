@@ -6,6 +6,7 @@ import Message from "../components/exam/Message";
 import ReportIcon from "@mui/icons-material/Report";
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import CollapsableCard from "../components/generic/CollapsableCard";
+import Question from "../components/exam/Question";
 
 
 
@@ -68,49 +69,17 @@ const Courses: FC<any> = (): ReactElement => {
       </Paper>
       <Box sx={{ my: 1, maxWidth: "lg", width: "100%" }}>
         {response?.questions?.map((question: any, index: number) => {
-          const answer = response?.answers?.find((a: any) => a.assessmentQuestion === question.questionIdentifier);
-          console.log(answer, response)
+          const user = response?.user.find((u) => u.user === question.user);
           return (
-            <Paper key={question.questionIdentifier} sx={{ mt: 1, maxWidth: "lg", width: "100%", px: 3, py: 3 }}>
-              <Typography variant="h6" component="h2">
-                {question.questionNumber})
-              </Typography>
-              <Typography>
-                {question.question}
-              </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end", mt: 1 }}>
-                <Typography variant="caption">Posted by: </Typography>
-                <Tooltip title={response.user.find((user: any) => user.user === question.user)?.nickname}>
-                  <Link to={`/user/${response.user.find((user: any) => user.user === question.user)?.name}`}>
-                    <Avatar sx={{ width: 32, height: 32, mr: 1 }} src={response.user.find((user: any) => user.user === question.user)?.image} />
-                  </Link>
-                </Tooltip>
-                <Typography variant="body2">{response.user.find((user: any) => user.user === question.user)?.nickname}</Typography>
-                <Tooltip title="Report">
-                  <ReportIcon sx={{ fontSize: "medium" }} />
-                </Tooltip>
-              </Box>
-              {answer && (
-                <CollapsableCard title={<React.Fragment>
-                  <Box sx={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}><Typography variant="h6"><QuestionAnswerIcon sx={{mr: 1}}/> Discussion ({response.answers.filter((a: any) => a.assessmentResponse === answer.assessmentResponse).length})</Typography></Box></React.Fragment>} content={[
-                    ...response.answers.filter((a: any) => a.assessmentResponse === answer.assessmentResponse).map((answer: any) => {
-                      const user = response.user.find((u: any) => u.user === answer.user);
-                      return (
-                        <Message
-                          key={answer.id}
-                          content={answer.response}
-                          nickname={user?.nickname}
-                          username={user?.name}
-                          id={answer.id}
-                          user={user}
-                          imageUrl={user?.image}
-                        />
-                      );
-                    })
-                  ]} defaultState={true} />
-              )}
-            </Paper>
-
+            <Question
+              key={question.questionIdentifier}
+              id={index}
+              question={question.question}
+              nickname={user?.nickname || ""}
+              name={user?.name || ""}
+              image={user?.image || ""}
+              response={response}
+            />
           );
         })}
       </Box>

@@ -57,7 +57,7 @@ const ActionButtons = ({ id, user }: Props) => {
                 .catch(error => {
                     console.error(error);
                 });
-        }, 10000);
+        }, 100);
 
         // Clean up the interval when the component unmounts
         return () => clearInterval(intervalId);

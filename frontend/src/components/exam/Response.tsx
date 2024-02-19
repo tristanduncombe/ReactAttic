@@ -18,9 +18,6 @@ interface Props {
 }
 
 const Response = ({ id, user, response, answer }: Props) => {
-
-
-
     {response.user.find((user: any) => user.user === answer.user)
     return (
         <Card sx={{ width: "100%", mt: 1 }} elevation={0}>
@@ -43,6 +40,6 @@ const Response = ({ id, user, response, answer }: Props) => {
             </CardContent>
         </Card>
     );
-};
+}};
 
 export default Response;
